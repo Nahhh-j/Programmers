@@ -19,3 +19,81 @@ grid[n-1][m-1] = 1 or 2
 grid에서 빈칸이 한 번 이상 등장합니다.
 n × m ≤ 20
 '''
+
+def solution(grid):
+    n, m = len(grid), len(grid[0])
+    
+    dx = [-1, 0, 1, 0]
+    dy = [0, 1, 0, -1]
+    
+    rail = {
+        1: {1:1, 3:3},
+        2: {0:0, 2:2},
+        3: {0:1, 1:0, 2:3, 3:2},
+        4: {2:1, 3:0},
+        5: {0:1, 3:2},
+        6: {0:3, 1:2},
+        7: {1:0, 2:3},
+    }
+    
+    total = n * m
+    answer = 0
+    
+    visited = [[False]*m for _ in range(n)]
+    
+    def dfs(x, y, d, cnt):
+        nonlocal answer
+        
+        # 범위 밖 or 장애물
+        if not (0 <= x < n and 0 <= y < m):
+            return
+        if grid[x][y] == -1:
+            return
+        
+        # 도착
+        if (x, y) == (n-1, m-1):
+            if cnt == total:
+                answer += 1
+            return
+        
+        # 이미 방문한 경우
+        if visited[x][y]:
+            return
+        
+        visited[x][y] = True
+        
+        # 현재 칸
+        if grid[x][y] != 0:
+            t = grid[x][y]
+            if d not in rail[t]:
+                visited[x][y] = False
+                return
+            
+            nd = rail[t][d]
+            nx = x + dx[nd]
+            ny = y + dy[nd]
+            dfs(nx, ny, nd, cnt+1)
+        
+        else:
+            # 빈칸 → 모든 선로 시도
+            for t in range(1, 8):
+                if d not in rail[t]:
+                    continue
+                
+                nd = rail[t][d]
+                
+                # 3번은 4방향 연결 필요 → 나중에 체크
+                grid[x][y] = t
+                
+                nx = x + dx[nd]
+                ny = y + dy[nd]
+                dfs(nx, ny, nd, cnt+1)
+                
+                grid[x][y] = 0
+        
+        visited[x][y] = False
+    
+    # 시작 (0,0)에서 오른쪽 방향(1)
+    dfs(0, 0, 1, 1)
+    
+    return answer
