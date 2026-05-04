@@ -18,3 +18,21 @@ signals의 원소는 [G, Y, R] 형태의 길이가 3인 정수 배열입니다. 
 1 ≤ G, Y, R ≤ 18
 3 ≤ G + Y + R ≤ 20
 '''
+
+def solution(signals):
+    def is_all_yellow(t):
+        for G, Y, R in signals:
+            cycle = G + Y + R
+            time_in_cycle = t % cycle
+            
+            if not (G <= time_in_cycle < G + Y):
+                return False
+        return True
+
+    MAX_TIME = 300000  # 충분한 상한
+
+    for t in range(MAX_TIME + 1):
+        if is_all_yellow(t):
+            return t
+
+    return -1
