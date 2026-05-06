@@ -23,3 +23,83 @@ spoiler_ranges[i]는 [start, end] 형태로 스포 방지를 적용한 구간을
 0 ≤ start ≤ end < message의 길이
 모든 구간은 서로 겹치지 않으며, start 기준으로 오름차순 정렬되어 주어집니다.
 '''
+
+def solution(message, spoiler_ranges):
+    n = len(message)
+
+    # 각 문자 위치가 어떤 spoiler 구간에 속하는지
+    covered = [-1] * n
+
+    for idx, (s, e) in enumerate(spoiler_ranges):
+        for i in range(s, e + 1):
+            covered[i] = idx
+
+    words = []
+
+    # 단어 파싱
+    i = 0
+    while i < n:
+        if message[i] == ' ':
+            i += 1
+            continue
+
+        start = i
+
+        while i < n and message[i] != ' ':
+            i += 1
+
+        end = i - 1
+
+        word = message[start:i]
+
+        words.append((word, start, end))
+
+    # spoiler 밖 등장 단어
+    normal_words = set()
+
+    # spoiler 단어 정보
+    spoiler_infos = []
+
+    for word, start, end in words:
+
+        spoiler_idxs = set()
+        has_non_spoiler = False
+
+        for i in range(start, end + 1):
+            if covered[i] == -1:
+                has_non_spoiler = True
+            else:
+                spoiler_idxs.add(covered[i])
+
+        # spoiler 아닌 곳에 등장
+        if has_non_spoiler and not spoiler_idxs:
+            normal_words.add(word)
+
+        # spoiler 단어
+        if spoiler_idxs:
+            # 모든 문자가 spoiler에 포함돼야 함
+            if not has_non_spoiler:
+                reveal_time = max(spoiler_idxs)
+
+                spoiler_infos.append(
+                    (reveal_time, start, word)
+                )
+
+    # spoiler 밖 등장한 단어 제거
+    spoiler_infos = [
+        x for x in spoiler_infos
+        if x[2] not in normal_words
+    ]
+
+    # 공개 순서대로 정렬
+    spoiler_infos.sort()
+
+    revealed = set()
+    answer = 0
+
+    for _, _, word in spoiler_infos:
+        if word not in revealed:
+            revealed.add(word)
+            answer += 1
+
+    return answer
