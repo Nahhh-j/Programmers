@@ -13,3 +13,25 @@ ex1-1.png
 1 ≤ w ≤ 10
 1 ≤ num ≤ n
 '''
+
+def solution(n, w, num):
+    # num 위치
+    target_row = (num - 1) // w
+    target_col = (num - 1) % w
+
+    if target_row % 2 == 1:
+        target_col = w - 1 - target_col
+
+    count = 0
+
+    for x in range(num, n + 1):
+        row = (x - 1) // w
+        col = (x - 1) % w
+
+        if row % 2 == 1:
+            col = w - 1 - col
+
+        if col == target_col:
+            count += 1
+
+    return count
