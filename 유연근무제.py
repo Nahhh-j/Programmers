@@ -6,3 +6,33 @@
 당신은 직원들이 설정한 출근 희망 시각과 실제로 출근한 기록을 바탕으로 상품을 받을 직원이 몇 명인지 알고 싶습니다.
 직원 n명이 설정한 출근 희망 시각을 담은 1차원 정수 배열 schedules, 직원들이 일주일 동안 출근한 시각을 담은 2차원 정수 배열 timelogs, 이벤트를 시작한 요일을 의미하는 정수 startday가 매개변수로 주어집니다. 이때 상품을 받을 직원의 수를 return 하도록 solution 함수를 완성해주세요.
 '''
+
+def solution(schedules, timelogs, startday):
+    answer = 0
+
+    for i in range(len(schedules)):
+        h = schedules[i] // 100
+        m = schedules[i] % 100
+
+        m += 10
+        if m >= 60:
+            h += 1
+            m -= 60
+
+        limit = h * 100 + m
+        success = True
+
+        for j in range(7):
+            day = (startday + j - 1) % 7 + 1
+
+            if day in (6, 7):
+                continue
+
+            if timelogs[i][j] > limit:
+                success = False
+                break
+
+        if success:
+            answer += 1
+
+    return answer
