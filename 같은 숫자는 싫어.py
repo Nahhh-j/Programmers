@@ -17,3 +17,12 @@ arr	answer
 입출력 예 #1,2
 문제의 예시와 같습니다.
 '''
+
+def solution(arr):
+    answer = [arr[0]]
+
+    for num in arr[1:]:
+        if num != answer[-1]:
+            answer.append(num)
+
+    return answer
