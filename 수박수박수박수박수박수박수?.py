@@ -9,3 +9,6 @@ n	return
 3	"수박수"
 4	"수박수박"
 '''
+
+def solution(n):
+    return ("수박" * n)[:n]
