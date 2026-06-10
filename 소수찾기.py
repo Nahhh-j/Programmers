@@ -16,3 +16,14 @@ n	result
 입출력 예 #2
 1부터 5 사이의 소수는 [2,3,5] 3개가 존재하므로 3를 반환
 '''
+
+def solution(n):
+    prime = [True] * (n + 1)
+    prime[0] = prime[1] = False
+
+    for i in range(2, int(n ** 0.5) + 1):
+        if prime[i]:
+            for j in range(i * i, n + 1, i):
+                prime[j] = False
+
+    return sum(prime)
