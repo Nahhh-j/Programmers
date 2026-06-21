@@ -12,3 +12,50 @@
 위에서 설명한 규칙대로 다음 달에 선물을 주고받을 때, 당신은 선물을 가장 많이 받을 친구가 받을 선물의 수를 알고 싶습니다.
 친구들의 이름을 담은 1차원 문자열 배열 friends 이번 달까지 친구들이 주고받은 선물 기록을 담은 1차원 문자열 배열 gifts가 매개변수로 주어집니다. 이때, 다음달에 가장 많은 선물을 받는 친구가 받을 선물의 수를 return 하도록 solution 함수를 완성해 주세요.
 '''
+
+def solution(friends, gifts):
+    n = len(friends)
+
+    # 이름 -> 인덱스
+    idx = {name: i for i, name in enumerate(friends)}
+
+    # 선물 기록
+    give = [[0] * n for _ in range(n)]
+
+    # 준 선물 / 받은 선물
+    sent = [0] * n
+    received = [0] * n
+
+    for gift in gifts:
+        a, b = gift.split()
+
+        i = idx[a]
+        j = idx[b]
+
+        give[i][j] += 1
+
+        sent[i] += 1
+        received[j] += 1
+
+    # 선물 지수
+    gift_score = [sent[i] - received[i] for i in range(n)]
+
+    # 다음 달 받을 선물 수
+    next_gift = [0] * n
+
+    for i in range(n):
+        for j in range(i + 1, n):
+
+            if give[i][j] > give[j][i]:
+                next_gift[i] += 1
+
+            elif give[i][j] < give[j][i]:
+                next_gift[j] += 1
+
+            else:
+                if gift_score[i] > gift_score[j]:
+                    next_gift[i] += 1
+                elif gift_score[i] < gift_score[j]:
+                    next_gift[j] += 1
+
+    return max(next_gift)
