@@ -20,3 +20,37 @@ attacks의 공격 시간은 모두 다릅니다.
 1 ≤ 공격 시간 ≤ 1,000
 1 ≤ 피해량 ≤ 100
 '''
+
+def solution(bandage, health, attacks):
+    t, x, y = bandage
+
+    max_health = health
+    current_health = health
+
+    attack_idx = 0
+    combo = 0
+
+    last_time = attacks[-1][0]
+
+    for time in range(1, last_time + 1):
+
+        # 공격 시간인 경우
+        if attack_idx < len(attacks) and time == attacks[attack_idx][0]:
+            current_health -= attacks[attack_idx][1]
+
+            if current_health <= 0:
+                return -1
+
+            combo = 0
+            attack_idx += 1
+
+        # 공격이 없는 경우
+        else:
+            current_health = min(max_health, current_health + x)
+            combo += 1
+
+            if combo == t:
+                current_health = min(max_health, current_health + y)
+                combo = 0
+
+    return current_health
