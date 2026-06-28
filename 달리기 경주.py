@@ -13,3 +13,25 @@ players에는 중복된 값이 들어가 있지 않습니다.
 callings는 players의 원소들로만 이루어져 있습니다.
 경주 진행중 1등인 선수의 이름은 불리지 않습니다.
 '''
+
+def solution(players, callings):
+    rank = {}
+
+    # 선수 이름 -> 현재 순위
+    for i, player in enumerate(players):
+        rank[player] = i
+
+    for name in callings:
+        idx = rank[name]
+
+        # 앞 선수
+        front = players[idx - 1]
+
+        # 선수 위치 변경
+        players[idx], players[idx - 1] = players[idx - 1], players[idx]
+
+        # 순위 갱신
+        rank[name] -= 1
+        rank[front] += 1
+
+    return players
