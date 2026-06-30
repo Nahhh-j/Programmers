@@ -16,3 +16,13 @@ yearning[i]는 i번째 사람의 그리움 점수입니다.
 photo[i]의 원소들은 알파벳 소문자로만 이루어져 있습니다.
 photo[i]의 원소들은 중복된 값이 들어가지 않습니다.
 '''
+
+def solution(name, yearning, photo):
+    score = dict(zip(name, yearning))
+
+    answer = []
+
+    for people in photo:
+        answer.append(sum(score.get(person, 0) for person in people))
+
+    return answer
