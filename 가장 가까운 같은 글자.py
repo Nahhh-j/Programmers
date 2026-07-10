@@ -15,3 +15,17 @@ a는 자신보다 두 칸, 네 칸 앞에 a가 있습니다. 이 중 가까운 �
 1 ≤ s의 길이 ≤ 10,000
 s은 영어 소문자로만 이루어져 있습니다.
 '''
+
+def solution(s):
+    answer = []
+    last = {}
+
+    for i, ch in enumerate(s):
+        if ch in last:
+            answer.append(i - last[ch])
+        else:
+            answer.append(-1)
+
+        last[ch] = i
+
+    return answer
