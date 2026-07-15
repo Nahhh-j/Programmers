@@ -21,3 +21,19 @@ wallpaper[i][j]는 "#" 또는 "."의 값만 가집니다.
 바탕화면에는 적어도 하나의 파일이 있습니다.
 드래그 시작점 (lux, luy)와 끝점 (rdx, rdy)는 lux < rdx, luy < rdy를 만족해야 합니다.
 '''
+
+def solution(wallpaper):
+    min_row = 50
+    min_col = 50
+    max_row = 0
+    max_col = 0
+
+    for i in range(len(wallpaper)):
+        for j in range(len(wallpaper[i])):
+            if wallpaper[i][j] == "#":
+                min_row = min(min_row, i)
+                min_col = min(min_col, j)
+                max_row = max(max_row, i)
+                max_col = max(max_col, j)
+
+    return [min_row, min_col, max_row + 1, max_col + 1]
