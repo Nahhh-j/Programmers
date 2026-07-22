@@ -18,3 +18,30 @@ keymap의 원소는 알파벳 대문자로만 이루어져 있습니다.
 1 ≤ targets의 원소의 길이 ≤ 100
 targets의 원소는 알파벳 대문자로만 이루어져 있습니다.
 '''
+
+def solution(keymap, targets):
+    # 문자별 최소 클릭 수 저장
+    press = {}
+
+    for key in keymap:
+        for idx, ch in enumerate(key):
+            if ch not in press:
+                press[ch] = idx + 1
+            else:
+                press[ch] = min(press[ch], idx + 1)
+
+    answer = []
+
+    for target in targets:
+        cnt = 0
+        possible = True
+
+        for ch in target:
+            if ch not in press:
+                possible = False
+                break
+            cnt += press[ch]
+
+        answer.append(cnt if possible else -1)
+
+    return answer
