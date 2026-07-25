@@ -15,3 +15,13 @@
 1 ≤ score[i] ≤ k
 이익이 발생하지 않는 경우에는 0을 return 해주세요.
 '''
+
+def solution(k, m, score):
+    score.sort(reverse=True)
+
+    answer = 0
+
+    for i in range(m - 1, len(score), m):
+        answer += score[i] * m
+
+    return answer
