@@ -7,3 +7,28 @@
 1 ≤ babbling[i]의 길이 ≤ 30
 문자열은 알파벳 소문자로만 이루어져 있습니다.
 '''
+
+def solution(babbling):
+    answer = 0
+    sounds = ["aya", "ye", "woo", "ma"]
+
+    for word in babbling:
+        prev = ""
+        
+        while word:
+            found = False
+            
+            for sound in sounds:
+                if word.startswith(sound) and sound != prev:
+                    word = word[len(sound):]
+                    prev = sound
+                    found = True
+                    break
+            
+            if not found:
+                break
+        
+        if word == "":
+            answer += 1
+
+    return answer
